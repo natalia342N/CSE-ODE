@@ -55,10 +55,41 @@ namespace ASC_ode
     }
   };
 
+  class ImprovedEuler : public TimeStepper
+  {
+    // std::shared_ptr<NonlinearFunction> m_equ;
+    // std::shared_ptr<Parameter> m_tau;
+    // std::shared_ptr<ConstantFunction> m_yold;
 
-  
+    Vector<> m_vecf;
+    Vector<> m_ytilde;
+  public:
+    ImprovedEuler(std::shared_ptr<NonlinearFunction> rhs) 
+    : TimeStepper(rhs), 
+    m_vecf(rhs->dimF()),
+    m_ytilde(rhs->dimX())
+    {
+      // m_yold = std::make_shared<ConstantFunction>(rhs->dimX());
+      // auto ynew = std::make_shared<IdentityFunction>(rhs->dimX());
+      // m_equ = ynew - m_yold - m_tau * m_rhs;
+    }
 
-}
+    void DoStep(double tau, VectorView<double> y) override
+    {
+      // m_yold->set(y);
+      // m_tau->set(tau);
+      // NewtonSolver(m_equ, y);
+
+      this->m_rhs->evaluate(y, m_vecf);
+      m_ytilde = y;
+      m_ytilde += 0.5 * tau * m_vecf;
+      this->m_rhs->evaluate(m_ytilde, m_vecf);
+
+      y += tau * m_vecf;
+    }
+  };
+
+} // namespace ASC_ode
 
 
 #endif
