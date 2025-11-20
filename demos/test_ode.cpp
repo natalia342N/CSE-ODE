@@ -91,8 +91,8 @@ int main()
   // RungeKutta stepper(rhs, Gauss2a, Gauss2b, Gauss2c);
 
   // Gauss3c .. points tabulated, compute a,b:
-  auto [Gauss3a,Gauss3b] = ComputeABfromC (Gauss3c);
-  ImplicitRungeKutta stepper(rhs, Gauss3a, Gauss3b, Gauss3c);
+  // auto [Gauss3a,Gauss3b] = ComputeABfromC (Gauss3c);
+  // ImplicitRungeKutta stepper(rhs, Gauss3a, Gauss3b, Gauss3c);
 
 
   /*
